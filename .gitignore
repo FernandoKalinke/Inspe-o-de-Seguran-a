@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# SQLite database
+database.db
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env
+
+# Editor/IDE configuration
+.vscode/
+.idea/
+
+# Temporary verification files
+jules-scratch/
+
+# Uploaded files
+uploads/

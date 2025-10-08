@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciar Perguntas{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Gerenciar Perguntas</h1>
+
+    <!-- Formulário para Adicionar Nova Pergunta -->
+    <div class="card">
+        <div class="card-header">
+            Adicionar Nova Pergunta
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{ url_for('list_questions') }}">
+                <div class="form-group">
+                    <label for="text">Texto da Pergunta</label>
+                    <input type="text" class="form-control" id="text" name="text" required>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Peso da Pergunta</label>
+                    <input type="number" step="0.1" class="form-control" id="weight" name="weight" value="1.0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Pergunta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de Perguntas Existentes -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Perguntas Existentes
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for question in questions %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ question.text }}</strong>
+                            <br>
+                            <small>Peso: {{ question.weight }}</small>
+                        </div>
+                        <a href="{{ url_for('delete_question', question_id=question.id) }}" class="btn btn-danger btn-sm">Remover</a>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">Nenhuma pergunta cadastrada.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

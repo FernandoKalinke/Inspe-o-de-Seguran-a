@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Realizando Inspeção: {{ inspection.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Realizando Inspeção: <strong>{{ inspection.title }}</strong></h1>
+
+    <form method="post" action="{{ url_for('submit_inspection', inspection_id=inspection.id) }}" enctype="multipart/form-data">
+        {% for question in questions %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <strong>{{ question.text }}</strong> (Peso: {{ question.weight }})
+            </div>
+            <div class="card-body">
+                <input type="hidden" name="question_id_{{ loop.index0 }}" value="{{ question.id }}">
+
+                <!-- Opções de Resposta -->
+                <div class="form-group">
+                    <label>Resposta</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="response_{{ loop.index0 }}" id="response_conforme_{{ question.id }}" value="Conforme" required>
+                        <label class="form-check-label" for="response_conforme_{{ question.id }}">Conforme</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="response_{{ loop.index0 }}" id="response_nao_conforme_{{ question.id }}" value="Não Conforme">
+                        <label class="form-check-label" for="response_nao_conforme_{{ question.id }}">Não Conforme</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="response_{{ loop.index0 }}" id="response_na_{{ question.id }}" value="N/A">
+                        <label class="form-check-label" for="response_na_{{ question.id }}">N/A</label>
+                    </div>
+                </div>
+
+                <!-- Upload de Fotos -->
+                <div class="form-group">
+                    <label for="photos_{{ loop.index0 }}">Adicionar Fotos</label>
+                    <input type="file" class="form-control-file" id="photos_{{ loop.index0 }}" name="photos_{{ loop.index0 }}" multiple>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-success btn-lg btn-block">Finalizar Inspeção</button>
+    </form>
+</div>
+{% endblock %}

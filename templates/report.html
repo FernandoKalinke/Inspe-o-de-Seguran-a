@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Relatório da Inspeção: {{ inspection.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Relatório da Inspeção: <strong>{{ inspection.title }}</strong></h1>
+    <p class="lead">Data: {{ inspection.timestamp.strftime('%d/%m/%Y %H:%M') }}</p>
+
+    <!-- Indicador de Conformidade -->
+    <div class="card mb-4 text-center">
+        <div class="card-header">
+            <h2>Nível de Conformidade</h2>
+        </div>
+        <div class="card-body">
+            <h1 class="display-4">{{ '%.2f'|format(compliance_score) }}%</h1>
+            <div class="progress" style="height: 30px;">
+                <div class="progress-bar {% if compliance_score >= 90 %}bg-success{% elif compliance_score >= 70 %}bg-warning{% else %}bg-danger{% endif %}"
+                     role="progressbar"
+                     style="width: {{ compliance_score }}%;"
+                     aria-valuenow="{{ compliance_score }}"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalhes das Respostas -->
+    <h2 class="mb-3">Respostas Detalhadas</h2>
+    {% for answer in inspection.answers %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>{{ answer.question.text }}</strong> (Peso: {{ answer.question.weight }})
+        </div>
+        <div class="card-body">
+            <p><strong>Resposta:</strong>
+                <span class="badge
+                    {% if answer.response == 'Conforme' %}badge-success
+                    {% elif answer.response == 'Não Conforme' %}badge-danger
+                    {% else %}badge-secondary{% endif %}">
+                    {{ answer.response }}
+                </span>
+            </p>
+
+            {% if answer.photos %}
+            <p><strong>Fotos de Evidência:</strong></p>
+            <div class="row">
+                {% for photo in answer.photos %}
+                <div class="col-md-3">
+                    <a href="{{ url_for('uploaded_file', filename=photo.filename) }}" target="_blank">
+                        <img src="{{ url_for('uploaded_file', filename=photo.filename) }}" class="img-thumbnail" alt="Evidência">
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <a href="{{ url_for('list_inspections') }}" class="btn btn-primary mt-3">Voltar para a Lista de Inspeções</a>
+</div>
+{% endblock %}
