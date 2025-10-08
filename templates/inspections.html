@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Inspeções{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Lista de Inspeções</h1>
+        <a href="{{ url_for('new_inspection') }}" class="btn btn-primary">Iniciar Nova Inspeção</a>
+    </div>
+
+    {% if inspections %}
+        <ul class="list-group">
+            {% for inspection in inspections %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{{ url_for('show_report', inspection_id=inspection.id) }}">
+                            <strong>{{ inspection.title }}</strong>
+                        </a>
+                        <br>
+                        <small>Data: {{ inspection.timestamp.strftime('%d/%m/%Y %H:%M') }}</small>
+                    </div>
+                    <!-- O link agora aponta para o relatório da inspeção -->
+                    <a href="{{ url_for('show_report', inspection_id=inspection.id) }}" class="btn btn-info btn-sm">Ver Relatório</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info">
+            Nenhuma inspeção encontrada. <a href="{{ url_for('new_inspection') }}" class="alert-link">Inicie uma agora!</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

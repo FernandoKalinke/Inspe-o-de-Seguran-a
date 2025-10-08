@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Nova Inspeção{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Iniciar Nova Inspeção</h1>
+    <form method="post" action="{{ url_for('new_inspection') }}">
+        <div class="form-group">
+            <label for="title">Título da Inspeção</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Iniciar Inspeção</button>
+    </form>
+</div>
+{% endblock %}
